@@ -1,8 +1,29 @@
+
+import { GestureRecognizer, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js"
+
+// Create task for image file processing:
+const vision = await FilesetResolver.forVisionTasks(
+  // path/to/wasm/root
+  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/wasm"
+);
+const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
+  baseOptions: {
+    modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
+  },
+  numHands: 2
+});
+
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
+const tagText = document.createElement("p")
+document.body.appendChild(tagText);
 
-function onResults(results) {
+async function onResults(results) {
+  const res = await gestureRecognizer.recognize(results.image);
+  if (res.gestures.length > 0)
+    tagText.textContent = res.gestures[0][0].categoryName;
+
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
   canvasCtx.drawImage(
@@ -38,3 +59,4 @@ const camera = new Camera(videoElement, {
   height: 720
 });
 camera.start();
+
