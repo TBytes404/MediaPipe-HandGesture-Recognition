@@ -1,2 +1,4 @@
 .DS_Store
 .venv/
+rps_data_sample/
+exported_model/

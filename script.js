@@ -8,7 +8,8 @@ const vision = await FilesetResolver.forVisionTasks(
 );
 const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
   baseOptions: {
-    modelAssetPath: "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
+    modelAssetPath: "./exported_model/gesture_recognizer.task"
+    // "https://storage.googleapis.com/mediapipe-tasks/gesture_recognizer/gesture_recognizer.task"
   },
   numHands: 2
 });
