@@ -1,10 +1,10 @@
-.wrapper {
+.container {
   width: fit-content;
   margin: auto;
   text-align: center;
 }
 
-.container {
+.media {
   display: grid;
 }
 
