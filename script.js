@@ -1,3 +1,5 @@
+navigator.serviceWorker.register('/service-worker.js');
+
 import { updateSelection } from '/game.js';
 import { GestureRecognizer, FilesetResolver, DrawingUtils } from
   "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.js"
