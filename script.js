@@ -1,10 +1,9 @@
-import { updateSelection } from './game.js';
+import { updateSelection } from '/game.js';
 import { GestureRecognizer, FilesetResolver, DrawingUtils } from
   "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.js"
 
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
-
 const ctx = canvas.getContext('2d');
 const drawing = new DrawingUtils(ctx);
 
@@ -30,14 +29,12 @@ function onFrame() {
       drawing.drawLandmarks(landmarks, { color: '#eb6f92', lineWidth: 2 });
     }
   ctx.restore();
-
   lastFrameTime += 1;
   requestAnimationFrame(onFrame);
 }
 
 const stream = await navigator.mediaDevices.getUserMedia({ video: true })
 video.srcObject = stream;
-
 video.addEventListener("loadeddata", () => {
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
