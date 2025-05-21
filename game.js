@@ -9,12 +9,13 @@ const opposition = document.querySelector("#opposition");
 const result = document.querySelector("#result");
 
 const gestureNames = ["rock", "paper", "scissors"];
-const randomGesture = () => Math.floor(Math.random() * gestureNames.length);
 const displayTexts = ["It's a Tie!", "You Win!", "You Lose!"];
-let pause = false;
-let stableGestureIdx = randomGesture();
-gestures[stableGestureIdx].classList.add("active");
+const url = new URL(location.href);
+peerid.value = url.searchParams.get("hostid") || "";
 
+let pause = false;
+let stableGestureIdx = 0;
+gestures[stableGestureIdx].classList.add("active");
 export function updateSelection(gesture) {
   let idx = gestureNames.indexOf(gesture);
   if (idx === -1 || idx === stableGestureIdx || pause) return;
@@ -28,19 +29,27 @@ peer.on("open", (id) => {
   hostid.textContent = id;
 })
 host.onclick = () => {
+  host.disabled = true;
+  connect.disabled = true;
   peerid.style.display = "none";
   connect.style.display = "none";
+  url.searchParams.set("hostid", hostid.textContent);
+  history.pushState(null, '', url);
+  navigator.clipboard.writeText(url.toString());
   peer.on("connection", setupListeners);
 }
 connect.onclick = () => {
+  host.disabled = true;
+  connect.disabled = true;
   hostid.style.display = "none";
   host.style.display = "none";
   setupListeners(peer.connect(peerid.value));
 }
 
+let loop;
 const setupListeners = (conn) => {
-  let loop;
   conn.on("open", () => {
+    clearInterval(loop);
     opposition.src = "/assets/loading.webp";
     loop = setInterval(() => {
       pause = true;
@@ -53,7 +62,6 @@ const setupListeners = (conn) => {
     const winnerIdx = (stableGestureIdx - oppositionIdx + 3) % 3;
     result.textContent = displayTexts[winnerIdx];
     opposition.src = `/assets/${gestureNames[oppositionIdx]}.webp`;
-
     setTimeout(() => {
       pause = false;
       gestures[stableGestureIdx].classList.remove("pause");
