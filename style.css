@@ -4,6 +4,23 @@
   text-align: center;
 }
 
+.connection>div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1em;
+}
+
+.connection input {
+  width: 21em;
+  font-size: 1em;
+}
+
+.connection button {
+  margin-left: 1em;
+  font-size: 1em;
+}
+
 .media {
   display: grid;
 }
