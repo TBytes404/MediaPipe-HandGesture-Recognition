@@ -1,40 +1,36 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-  <link rel="apple-touch-icon" href="/assets/icon512_maskable.png">
-  <link rel="manifest" href="/assets/app.webmanifest">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rock ✊ Paper 🖐️ Scissors ✌️</title>
-  <link rel="stylesheet" href="/style.css">
-  <script type="module" src="/script.js"></script>
 </head>
-
 <body>
-  <div class="container">
-    <div class="connection">
-      <div>
-        <h3 id="hostid"></h3>
-        <button id="host">Host</button>
-      </div>
-      <div>
-        <input id="peerid" type="text" placeholder="Peer ID">
-        <button id="connect">Connect</button>
-      </div>
+<div class="container">
+  <div class="connection">
+    <div>
+      <h3 id="hostid"></h3>
+      <button id="host">Host</button>
     </div>
-    <div class="media">
-      <video id="video" autoplay></video>
-      <canvas id="canvas"></canvas>
+    <div>
+      <input id="peerid" type="text" placeholder="Peer ID">
+      <button id="connect">Connect</button>
     </div>
-    <h2>Your Move:</h2>
-    <ol class="gestures">
-      <li>Rock ✊</li>
-      <li>Paper 🖐️</li>
-      <li>Scissors ✌️</li>
-    </ol>
-    <h2>Opposition:</h2>
-    <img id="opposition" alt="Opposition">
-    <h1 id="result"></h1>
   </div>
+  <div class="media">
+    <video id="video" autoplay></video>
+    <canvas id="canvas"></canvas>
+  </div>
+  <h2>Your Move:</h2>
+  <ol class="gestures">
+    <li>Rock ✊</li>
+    <li>Paper 🖐️</li>
+    <li>Scissors ✌️</li>
+  </ol>
+  <h2>Opposition:</h2>
+  <img id="opposition" alt="Opposition">
+  <h1 id="result"></h1>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

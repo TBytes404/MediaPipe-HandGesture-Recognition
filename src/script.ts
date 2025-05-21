@@ -1,20 +1,18 @@
-navigator.serviceWorker.register('/service-worker.js');
+import { updateSelection } from './game';
+import { GestureRecognizer, FilesetResolver, DrawingUtils } from "@mediapipe/tasks-vision"
 
-import { updateSelection } from '/game.js';
-import { GestureRecognizer, FilesetResolver, DrawingUtils } from
-  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.js"
-
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+const video = document.getElementById('video') as HTMLVideoElement;
+const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+const ctx = canvas.getContext('2d')!;
 const drawing = new DrawingUtils(ctx);
 
 const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm");
 const gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
   baseOptions: {
-    modelAssetPath: "/exported_model/gesture_recognizer.task",
+    modelAssetPath: "/gesture_recognizer.task",
     delegate: "GPU"
-  }, runningMode: "VIDEO"
+  }, runningMode: "VIDEO",
+  // canvas: canvas
 });
 
 let lastFrameTime = 0;
