@@ -1,11 +1,11 @@
-# Rock Paper Scissors using Hand Gesture Recognition
+# Rock ✊ Paper 🖐️ Scissors ✌️
 
-![rock paper scissor](/assets/loading.webp)
+![rock paper scissor](public/loading.webp)
 
-Using computer vision and machine learning to recognize the gesture of rock paper scissors.
+Multiplayer Rock Paper Scissors Game using Computer Vision and WebRTC.
 
 <!--toc:start-->
-- [Rock Paper Scissors using Hand Gesture Recognition](#rock-paper-scissors-using-hand-gesture-recognition)
+- [Rock ✊ Paper 🖐️ Scissors ✌️](#rock-paper-🖐️-scissors-️)
   - [Play the Game](#play-the-game)
   - [Model Training](#model-training)
     - [Requirements](#requirements)
@@ -14,9 +14,9 @@ Using computer vision and machine learning to recognize the gesture of rock pape
 
 ## Play the Game
 
-1. Host this site publicly, then Visit to play
-2. Click `Host` & Share the copied URL with your friends
-3. The other Player must visit the URL you Shared and click `Connect`
+1. Build & Host this site publicly, then Visit to play
+2. Click `Host` & Share the copied `URL` with your friends
+3. The other Player must visit the `URL` you Shared and click `Connect`
 4. You can start Playing by showing rock-paper-scissors on the Camera.
 
 ## Model Training
@@ -45,12 +45,16 @@ unzip rps_data_sample.zip
 python train.py
 ```
 
-Generated model will be saved in `exported_model/` directory
-
-2. Host the site locally
+2. Copy the trained model to the `public/` directory
 
 ```sh
-python -m http.server 8000
+cp exported_model/gesture_recognizer.task public/
 ```
 
-Open `http://localhost:8000/` on the browser.
+3. Run the development server
+
+```sh
+yarn && yarn dev
+```
+
+4. Open `http://localhost:1234` on the browser.

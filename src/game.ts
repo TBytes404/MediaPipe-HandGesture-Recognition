@@ -19,6 +19,7 @@ gestures[stableGestureIdx].classList.add("active");
 export function updateSelection(gesture: string) {
   let idx = gestureNames.indexOf(gesture);
   if (idx === -1 || idx === stableGestureIdx || pause) return;
+
   gestures[idx].classList.add("active");
   gestures[stableGestureIdx].classList.remove("active");
   stableGestureIdx = idx;
@@ -28,6 +29,7 @@ const peer = new Peer();
 peer.on("open", (id) => {
   hostid.textContent = id;
 })
+
 host.onclick = () => {
   host.disabled = true;
   connect.disabled = true;
@@ -39,6 +41,7 @@ host.onclick = () => {
   navigator.clipboard.writeText(url.toString());
   peer.on("connection", setupListeners);
 }
+
 connect.onclick = () => {
   host.disabled = true;
   connect.disabled = true;
@@ -52,6 +55,7 @@ const setupListeners = (conn: DataConnection) => {
   conn.on("open", () => {
     clearInterval(loop);
     opposition.src = "/loading.webp";
+
     loop = setInterval(() => {
       pause = true;
       gestures[stableGestureIdx].classList.add("pause");
@@ -64,6 +68,7 @@ const setupListeners = (conn: DataConnection) => {
     const winnerIdx = (stableGestureIdx - oppositionIdx + 3) % 3;
     result.textContent = displayTexts[winnerIdx];
     opposition.src = `/${gestureNames[oppositionIdx]}.webp`;
+
     setTimeout(() => {
       pause = false;
       gestures[stableGestureIdx].classList.remove("pause");
