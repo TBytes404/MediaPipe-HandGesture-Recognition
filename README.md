@@ -17,8 +17,8 @@ Multiplayer Rock Paper Scissors Game using Computer Vision and WebRTC.
 ![QR Link](public/rps-qr.svg)
 
 1. Visit `https://rps-21b02a.gitlab.io` to play
-2. Click `Host` & Share the copied `URL` with your friends
-3. The other Player must visit the `URL` you Shared and click `Connect`
+2. Click `Share` & Share the copied `URL` with your friends
+3. The other Player must visit the `URL` you Shared and click `Join`
 4. You can start Playing by showing rock-paper-scissors on the Camera.
 
 ## Model Training
@@ -53,10 +53,10 @@ python train.py
 cp exported_model/gesture_recognizer.task public/
 ```
 
-3. Run the development server
+3. Test the model on the browser
 
 ```sh
 yarn && yarn dev
 ```
 
-4. Open `http://localhost:1234` on the browser.
+Open `http://localhost:5173`.

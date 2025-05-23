@@ -6,15 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "peer": "peerjs --port 9000 --key peerjs --path /"
   },
   "devDependencies": {
     "@vite-pwa/assets-generator": "^1.0.0",
+    "peer": "^1.0.2",
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-pwa": "^0.21.1",
-    "workbox-window": "^7.3.0",
-    "workbox-build": "^7.3.0"
+    "workbox-build": "^7.3.0",
+    "workbox-window": "^7.3.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "dependencies": {
