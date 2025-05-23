@@ -17,7 +17,6 @@ export default defineConfig({
       short_name: 'RPS',
       description: 'Play using Hand Gestures',
       theme_color: '#eb6f92',
-      background_color: "#31748f",
     },
 
     workbox: {

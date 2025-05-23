@@ -1,91 +1,135 @@
 import { type DataConnection, Peer } from "peerjs"
 
-const hostid = document.getElementById("hostid")!;
-const host = document.getElementById("host") as HTMLButtonElement;
-const peerid = document.getElementById("peerid") as HTMLInputElement;
-const connect = document.getElementById("connect") as HTMLButtonElement;
-const gestures = document.querySelectorAll(".gestures>li");
-const opposition = document.querySelector("#opposition") as HTMLImageElement;
-const result = document.querySelector("#result")!;
+export class Game {
+  hostid: HTMLElement;
+  host: HTMLButtonElement;
+  peerid: HTMLInputElement;
+  connect: HTMLButtonElement;
+  gestures: NodeListOf<HTMLElement>;
+  opposition: HTMLImageElement;
+  message: HTMLElement;
+  scores: NodeListOf<HTMLElement>;
+  match: HTMLElement;
+  game: HTMLElement;
 
-const gestureNames = ["rock", "paper", "scissors"];
-const displayTexts = ["It's a Tie!", "You Win!", "You Lose!"];
-const url = new URL(location.href);
-peerid.value = url.searchParams.get("hostid") || "";
+  url: URL;
+  peer: Peer;
+  private loop?: number;
+  pause: boolean;
+  stableGestureIdx: number;
+  gestureNames: string[];
+  displayTexts: string[];
 
-let pause = false;
-let stableGestureIdx = 0;
-gestures[stableGestureIdx].classList.add("active");
-export function updateSelection(gesture: string) {
-  let idx = gestureNames.indexOf(gesture);
-  if (idx === -1 || idx === stableGestureIdx || pause) return;
+  constructor(app: Element) {
+    this.match = app.querySelector("#match")!;
+    this.hostid = app.querySelector("#hostid")!;
+    this.host = app.querySelector("#host")!;
+    this.peerid = app.querySelector("#peerid")!;
+    this.connect = app.querySelector("#connect")!;
+    this.game = app.querySelector("#game")!;
+    this.gestures = app.querySelectorAll("#gestures>li");
+    this.opposition = app.querySelector("#opposition")!;
+    this.message = app.querySelector("#message")!;
+    this.scores = app.querySelectorAll("#scores>li>span")!;
 
-  gestures[idx].classList.add("active");
-  gestures[stableGestureIdx].classList.remove("active");
-  stableGestureIdx = idx;
-}
+    this.peer = new Peer();
+    this.url = new URL(location.href);
+    this.peerid.value = this.url.searchParams.get("hostid") || "";
+    this.pause = false;
+    this.stableGestureIdx = 0;
+    this.gestureNames = ["rock", "paper", "scissors"];
+    this.displayTexts = ["It's a Tie!", "You Win!", "You Lose!"];
+    this.gestures[this.stableGestureIdx].classList.add("active");
+  }
 
-const peer = new Peer();
-peer.on("open", (id) => {
-  hostid.textContent = id;
-})
+  select(gesture: string) {
+    let idx = this.gestureNames.indexOf(gesture);
+    if (idx === -1 || idx === this.stableGestureIdx || this.pause) return;
+    this.gestures[idx].classList.add("active");
+    this.gestures[this.stableGestureIdx].classList.remove("active");
+    this.stableGestureIdx = idx;
+  }
 
-host.onclick = () => {
-  host.disabled = true;
-  connect.disabled = true;
-  peerid.style.display = "none";
-  connect.style.display = "none";
+  setupMatchMaking() {
+    this.peer.on("open", (id) => {
+      this.hostid.textContent = id;
+    })
 
-  url.searchParams.set("hostid", hostid.textContent || "");
-  history.pushState(null, '', url);
-  navigator.clipboard.writeText(url.toString());
-  peer.on("connection", setupListeners);
-}
+    this.host.onclick = () => {
+      this.host.disabled = true;
+      this.connect.disabled = true;
+      this.peerid.hidden = true;
+      this.connect.hidden = true;
+      this.url.searchParams.set("hostid", this.hostid.textContent || "");
+      history.pushState(null, '', this.url);
+      navigator.clipboard.writeText(this.url.toString());
+      this.peer.on("connection",
+        (conn) => this.setupConnectionListeners(conn));
+    }
 
-connect.onclick = () => {
-  host.disabled = true;
-  connect.disabled = true;
-  hostid.style.display = "none";
-  host.style.display = "none";
-  setupListeners(peer.connect(peerid.value));
-}
+    this.connect.onclick = () => {
+      this.host.disabled = true;
+      this.connect.disabled = true;
+      this.hostid.hidden = true;
+      this.host.hidden = true;
+      this.loop = setTimeout(() => {
+        this.host.disabled = false;
+        this.connect.disabled = false;
+        this.hostid.hidden = false;
+        this.host.hidden = false;
+      }, 8000)
+      this.setupConnectionListeners(
+        this.peer.connect(this.peerid.value));
+    }
+  }
 
-let loop: number;
-const setupListeners = (conn: DataConnection) => {
-  conn.on("open", () => {
-    clearInterval(loop);
-    opposition.src = "/loading.webp";
+  private setupConnectionListeners(conn: DataConnection) {
+    conn.on("open", () => {
+      clearInterval(this.loop);
+      for (const li of this.scores)
+        li.textContent = "0";
+      this.opposition.src = "/loading.webp";
+      this.match.hidden = true;
+      this.game.hidden = false;
+      this.loop = setInterval(() => {
+        this.pause = true;
+        this.gestures[this.stableGestureIdx].classList.add("pause");
+        conn.send(this.stableGestureIdx);
+      }, 12000);
+    });
 
-    loop = setInterval(() => {
-      pause = true;
-      gestures[stableGestureIdx].classList.add("pause");
-      conn.send(stableGestureIdx);
-    }, 12000);
-  });
+    conn.on("data", (data) => {
+      const oppositionIdx = data as number;
+      const winnerIdx = (this.stableGestureIdx - oppositionIdx + 3) % 3;
+      this.message.textContent = this.displayTexts[winnerIdx];
+      this.opposition.src = `/${this.gestureNames[oppositionIdx]}.webp`;
+      this.scores[winnerIdx].textContent =
+        (parseInt(this.scores[winnerIdx].textContent!) + 1).toString();
+      setTimeout(() => {
+        this.pause = false;
+        this.gestures[this.stableGestureIdx].classList.remove("pause");
+        this.opposition.src = "/loading.webp";
+      }, 4000);
+      speechSynthesis.speak(new SpeechSynthesisUtterance(this.displayTexts[winnerIdx]));
+    });
 
-  conn.on("data", (data) => {
-    const oppositionIdx = data as number;
-    const winnerIdx = (stableGestureIdx - oppositionIdx + 3) % 3;
-    result.textContent = displayTexts[winnerIdx];
-    opposition.src = `/${gestureNames[oppositionIdx]}.webp`;
+    conn.on("close", () => {
+      clearInterval(this.loop);
+      this.match.hidden = false;
+      this.game.hidden = true;
+      this.hostid.hidden = false;
+      this.peerid.hidden = false;
+      this.host.hidden = false;
+      this.connect.hidden = false;
+      this.host.disabled = false;
+      this.connect.disabled = false;
+    });
 
-    setTimeout(() => {
-      pause = false;
-      gestures[stableGestureIdx].classList.remove("pause");
-      opposition.src = "/loading.webp";
-    }, 4000);
-    speechSynthesis.speak(new SpeechSynthesisUtterance(displayTexts[winnerIdx]));
-  });
-
-  conn.on("close", () => {
-    console.log("DataConnection closed.");
-    clearInterval(loop);
-    opposition.src = "";
-  });
-
-  conn.on("error", (err) => {
-    console.error("DataConnection error:", err);
-    clearInterval(loop);
-    opposition.src = "";
-  });
+    conn.on("error", (err) => {
+      console.error("DataConnection error:", err);
+      clearInterval(this.loop);
+      this.match.hidden = true;
+      this.game.hidden = true;
+    });
+  }
 }

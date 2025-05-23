@@ -13,30 +13,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.container {
+#container {
   width: fit-content;
   margin: auto;
   text-align: center;
 }
 
-.connection>div {
+#match>div {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 1em;
 }
 
-.connection input {
+#match input {
   width: 21em;
   font-size: 1em;
 }
 
-.connection button {
+#match button {
   margin-left: 1em;
   font-size: 1em;
 }
 
-.media {
+#media {
   display: grid;
 }
 
@@ -46,25 +46,68 @@
   grid-row: 1;
 }
 
-.gestures {
+ol {
   list-style-type: none;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
 }
 
-.gestures>li {
+ol>li {
   font-size: 2em;
   font-weight: bold;
   padding: 0.3em 0.5em;
   border-radius: 0.3em;
 }
 
-.gestures>.active {
+#gestures>.active {
   background-color: #31748f;
   color: #fffaf3;
 }
 
-.gestures>.pause {
+#gestures>.pause {
   background-color: #eb6f92;
+}
+
+#pwa-toast {
+  visibility: hidden;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 16px;
+  padding: 12px;
+  border: 1px solid #8885;
+  border-radius: 4px;
+  z-index: 1;
+  text-align: left;
+  box-shadow: 3px 4px 5px 0 #8885;
+  display: grid;
+}
+
+#pwa-toast .message {
+  margin-bottom: 8px;
+}
+
+#pwa-toast .buttons {
+  display: flex;
+}
+
+#pwa-toast button {
+  border: 1px solid #8885;
+  outline: none;
+  margin-right: 5px;
+  border-radius: 2px;
+  padding: 3px 10px;
+}
+
+#pwa-toast.show {
+  visibility: visible;
+}
+
+button#pwa-refresh {
+  display: none;
+}
+
+#pwa-toast.show.refresh button#pwa-refresh {
+  display: block;
 }

@@ -1,7 +1,5 @@
 import { registerSW } from 'virtual:pwa-register'
 
-initPWA(document.body)
-
 export function initPWA(app: Element) {
   const pwaToast = app.querySelector<HTMLDivElement>('#pwa-toast')!
   const pwaToastMessage = pwaToast.querySelector<HTMLDivElement>('.message #toast-message')!

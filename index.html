@@ -1,36 +1,64 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rock ✊ Paper 🖐️ Scissors ✌️</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rock ✊ Paper 🖐️ Scissors ✌️</title>
+<script type="module" src="/src/main.ts"></script>
 </head>
 <body>
-<div class="container">
-  <div class="connection">
-    <div>
-      <h3 id="hostid"></h3>
-      <button id="host">Host</button>
+<div id="app">
+  <div id="container">
+    <div id="media">
+      <video id="video" autoplay></video>
+      <canvas id="canvas"></canvas>
     </div>
-    <div>
-      <input id="peerid" type="text" placeholder="Peer ID">
-      <button id="connect">Connect</button>
+    <div id="move">
+      <h2>Your Move:</h2>
+      <ol id="gestures">
+        <li>Rock ✊</li>
+        <li>Paper 🖐️</li>
+        <li>Scissors ✌️</li>
+      </ol>
+    </div>
+    <div id="match">
+      <div>
+        <h3 id="hostid"></h3>
+        <button id="host">Host</button>
+      </div>
+      <div>
+        <input id="peerid" type="text" placeholder="Peer ID">
+        <button id="connect">Connect</button>
+      </div>
+    </div>
+    <div id="game" hidden>
+      <h2>Opposition:</h2>
+      <img id="opposition" alt="Opposition">
+      <h1 id="message"></h1>
+    </div>
+    <ol id="scores">
+      <li>Ties: <span>0</span></li>
+      <li>Wins: <span>0</span></li>
+      <li>Losses: <span>0</span></li>
+    </ol>
+  </div>
+  <div
+    id="pwa-toast"
+    role="alert"
+    aria-labelledby="toast-message"
+  >
+    <div class="message">
+      <span id="toast-message"></span>
+    </div>
+    <div class="buttons">
+        <button id="pwa-refresh" type="button">
+          Reload
+        </button>
+        <button id="pwa-close" type="button">
+          Close
+        </button>
     </div>
   </div>
-  <div class="media">
-    <video id="video" autoplay></video>
-    <canvas id="canvas"></canvas>
-  </div>
-  <h2>Your Move:</h2>
-  <ol class="gestures">
-    <li>Rock ✊</li>
-    <li>Paper 🖐️</li>
-    <li>Scissors ✌️</li>
-  </ol>
-  <h2>Opposition:</h2>
-  <img id="opposition" alt="Opposition">
-  <h1 id="result"></h1>
-  </div>
-  <script type="module" src="/src/main.ts"></script>
+</div>
 </body>
 </html>

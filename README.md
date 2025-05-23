@@ -5,14 +5,16 @@
 Multiplayer Rock Paper Scissors Game using Computer Vision and WebRTC.
 
 <!--toc:start-->
-- [Rock ✊ Paper 🖐️ Scissors ✌️](#rock-paper-🖐️-scissors-️)
+
+- [Rock ✊ Paper 🖐️ Scissors ✌️](#rock--paper-️-scissors-️)
   - [Play the Game](#play-the-game)
   - [Model Training](#model-training)
     - [Requirements](#requirements)
     - [Steps](#steps)
-<!--toc:end-->
 
 ## Play the Game
+
+![QR Link](public/rps-qr.svg)
 
 1. Visit `https://rps-21b02a.gitlab.io` to play
 2. Click `Host` & Share the copied `URL` with your friends
