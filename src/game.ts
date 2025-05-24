@@ -11,6 +11,11 @@ export class Game {
   scores: NodeListOf<HTMLElement>
   match: HTMLElement
   game: HTMLElement
+  vscomputer: HTMLElement
+  vsplayer: HTMLElement
+  singleplayer: HTMLElement
+  multiplayer: HTMLElement
+  play: HTMLButtonElement
 
   connected: boolean
   private loop?: NodeJS.Timeout
@@ -21,6 +26,11 @@ export class Game {
 
   constructor(app: Element) {
     this.match = app.querySelector("#match")!
+    this.vscomputer = app.querySelector('#vscomputer')!
+    this.vsplayer = app.querySelector('#vsplayer')!
+    this.singleplayer = app.querySelector('#singleplayer')!
+    this.multiplayer = app.querySelector('#multiplayer')!
+    this.play = app.querySelector("#play")!
     this.hostid = app.querySelector("#hostid")!
     this.share = app.querySelector("#share")!
     this.peerid = app.querySelector("#peerid")!
@@ -51,6 +61,48 @@ export class Game {
     for (let idx = 0; idx < this.gestures.length; idx++)
       this.gestures[idx].onclick = () => this.update(this.gestureNames[idx])
 
+    this.play.onclick = () => this.startSinglePlayer()
+    this.vscomputer.onclick = () => {
+      this.singleplayer.hidden = false
+      this.multiplayer.hidden = true
+    }
+
+    this.setupMultiplayer()
+    this.vsplayer.onclick = () => {
+      this.singleplayer.hidden = true
+      this.multiplayer.hidden = false
+    }
+  }
+
+  evaluate(oppositionIdx: number) {
+    const winnerIdx = (this.stableGestureIdx - oppositionIdx + 3) % 3
+    this.message.textContent = this.displayTexts[winnerIdx]
+    this.opposition.src = `/${this.gestureNames[oppositionIdx]}.webp`
+    this.scores[winnerIdx].textContent =
+      (parseInt(this.scores[winnerIdx].textContent!) + 1).toString()
+    speechSynthesis.speak(
+      new SpeechSynthesisUtterance(this.displayTexts[winnerIdx]))
+  }
+
+  startSinglePlayer() {
+    clearInterval(this.loop)
+    for (const li of this.scores) li.textContent = "0"
+    this.opposition.src = "/loading.webp"
+    this.match.hidden = true
+    this.game.hidden = false
+    this.loop = setInterval(() => {
+      this.pause = true
+      this.gestures[this.stableGestureIdx].classList.add("pause")
+      this.evaluate(Math.floor(Math.random() * this.gestureNames.length))
+      setTimeout(() => {
+        this.pause = false
+        this.gestures[this.stableGestureIdx].classList.remove("pause")
+        this.opposition.src = "/loading.webp"
+      }, 4000)
+    }, 12000)
+  }
+
+  setupMultiplayer() {
     const peer = new Peer()
     const url = new URL(location.href)
     this.peerid.value = url.searchParams.get("hostid") || ""
@@ -101,12 +153,7 @@ export class Game {
     })
 
     conn.on("data", (data) => {
-      const oppositionIdx = data as number
-      const winnerIdx = (this.stableGestureIdx - oppositionIdx + 3) % 3
-      this.message.textContent = this.displayTexts[winnerIdx]
-      this.opposition.src = `/${this.gestureNames[oppositionIdx]}.webp`
-      this.scores[winnerIdx].textContent =
-        (parseInt(this.scores[winnerIdx].textContent!) + 1).toString()
+      this.evaluate(data as number)
       if (!isHost) {
         this.pause = true
         this.gestures[this.stableGestureIdx].classList.add("pause")
@@ -117,7 +164,6 @@ export class Game {
         this.gestures[this.stableGestureIdx].classList.remove("pause")
         this.opposition.src = "/loading.webp"
       }, 4000)
-      speechSynthesis.speak(new SpeechSynthesisUtterance(this.displayTexts[winnerIdx]))
     })
 
     conn.on("close", () => {

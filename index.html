@@ -23,13 +23,22 @@
       </ol>
     </div>
     <div id="match">
-      <div>
-        <h4 id="hostid"></h4>
-        <button id="share">Share</button>
+      <input type="radio" name="match" value="singleplayer" id="vscomputer" checked>
+      <label for="vscomputer">VS Computer</label><br>
+      <div id="singleplayer">
+        <button id="play">Play</button>
       </div>
-      <div>
-        <input id="peerid" type="text" placeholder="Peer ID">
-        <button id="join">Join</button>
+      <input type="radio" name="match" value="multiplayer" id="vsplayer">
+      <label for="vsplayer">VS Player</label><br>
+      <div id="multiplayer" hidden>
+        <div>
+          <h4 id="hostid"></h4>
+          <button id="share">Share</button>
+        </div>
+        <div>
+          <textarea id="peerid" type="text" cols="36" placeholder="Peer ID"></textarea>
+          <button id="join">Join</button>
+        </div>
       </div>
     </div>
     <div id="game" hidden>
@@ -38,9 +47,9 @@
       <h1 id="message"></h1>
     </div>
     <ol id="scores">
-      <li>Ties: <span>0</span></li>
-      <li>Wins: <span>0</span></li>
-      <li>Losses: <span>0</span></li>
+      <li>Ties: <span></span></li>
+      <li>Wins: <span></span></li>
+      <li>Losses: <span></span></li>
     </ol>
   </div>
   <div

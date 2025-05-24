@@ -28,7 +28,7 @@
 }
 
 #container>div {
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
 }
 
 #match {
@@ -36,16 +36,21 @@
   border-radius: 0.3em;
 }
 
-#match>div {
+#multiplayer>div {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 1em;
 }
 
-#match input {
-  width: 21em;
+#match textarea {
+  max-width: 100%;
+  padding: 0.5em 0.3em;
+  border: none;
+  border-bottom: 1px solid #8885;
+  text-align: center;
   font-size: 1em;
+  font-weight: bold;
 }
 
 #match button {
@@ -88,8 +93,6 @@ ol>li {
 #gestures>.pause {
   background-color: #eb6f92;
 }
-
-/* #match button:disabled { } */
 
 #pwa-toast {
   visibility: hidden;
