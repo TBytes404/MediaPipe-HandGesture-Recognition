@@ -6,8 +6,9 @@ export class Rocon {
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D
   drawing: DrawingUtils
-  facingMode: 'user' | 'environment'
+
   running: boolean
+  facingMode: 'user' | 'environment'
   private gestureRecognizer!: GestureRecognizer
   onResult?: (gesture: string) => void
   lastResult?: string
@@ -20,8 +21,6 @@ export class Rocon {
     this.drawing = new DrawingUtils(this.ctx)
     this.running = false
     this.facingMode = 'user'
-    this.flip.onclick = () =>
-      this.switch(this.facingMode === 'user' ? 'environment' : 'user')
   }
 
   clearCanvas() {
@@ -76,6 +75,8 @@ export class Rocon {
       this.canvas.height = this.video.videoHeight
       requestAnimationFrame(() => this.onFrame())
     }
-    this.switch(this.facingMode)
+    await this.switch(this.facingMode)
+    this.flip.onclick = () =>
+      this.switch(this.facingMode === 'user' ? 'environment' : 'user')
   }
 }
