@@ -16,7 +16,7 @@ Multiplayer Rock Paper Scissors Game using Computer Vision and WebRTC.
 
 ![QR Link](public/rps-qr.svg)
 
-1. Visit `https://rps-21b02a.gitlab.io` to play
+1. Visit [rps-21b02a.gitlab.io](https://rps-21b02a.gitlab.io) to play
 2. Click `Share` & Share the copied `URL` with your friends
 3. The other Player must visit the `URL` you Shared and click `Join`
 4. You can start Playing by showing rock-paper-scissors on the Camera.

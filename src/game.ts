@@ -7,11 +7,12 @@ export class Game {
   scores: NodeListOf<HTMLElement>
   match: HTMLElement
   game: HTMLElement
-  vscomputer: HTMLElement
+  vscomputer: HTMLInputElement
   vsplayer: HTMLElement
   singleplayer: HTMLElement
   multiplayer: HTMLElement
   play: HTMLButtonElement
+  share: HTMLButtonElement
 
   paused: boolean
   gestureNames: string[]
@@ -32,6 +33,7 @@ export class Game {
     this.opposition = app.querySelector("#opposition")!
     this.message = app.querySelector("#message")!
     this.scores = app.querySelectorAll("#scores>li>span")!
+    this.share = app.querySelector("#share")!
     this.paused = false
     this.gestureNames = ["rock", "paper", "scissors"]
     this.displayTexts = ["It's a Tie!", "You Win!", "You Lose!"]
@@ -59,6 +61,13 @@ export class Game {
     }
 
     this.setupMultiplayer()
+    this.share.onclick = async () => {
+      await navigator.clipboard.writeText(this.net.url.toString())
+      this.share.innerText = "Copied ✅"
+      this.vscomputer.checked = true
+      this.singleplayer.hidden = false
+      this.multiplayer.hidden = true
+    }
     this.vsplayer.onclick = () => {
       this.singleplayer.hidden = true
       this.multiplayer.hidden = false
@@ -70,22 +79,22 @@ export class Game {
   }
 
   private startSinglePlayer() {
-    this.start()
+    this.start("Playing against the Computer!")
     this.loop = setInterval(() => {
       this.pause()
       this.evaluate(this.randomGestureIdx())
       setTimeout(() => this.resume(), 4000)
-    }, 12000)
+    }, 8000)
   }
 
   private setupMultiplayer() {
     this.net.onOpen = () => {
-      this.start()
+      this.start("Player has Joined the Game!")
       if (this.net.isHost)
         this.loop = setInterval(() => {
           this.pause()
           this.net.send(this.stableGestureIdx)
-        }, 12000)
+        }, 8000)
     }
     this.net.onData = (data: any) => {
       this.evaluate(data)
@@ -112,13 +121,15 @@ export class Game {
       new SpeechSynthesisUtterance(this.displayTexts[winnerIdx]))
   }
 
-  private start() {
+  private start(msg: string) {
     clearInterval(this.loop)
     this.loop = undefined
     this.match.hidden = true
     this.game.hidden = false
     this.opposition.src = "/loading.webp"
     for (const li of this.scores) li.textContent = "0"
+    this.message.textContent = msg
+    speechSynthesis.speak(new SpeechSynthesisUtterance(msg))
   }
 
   private stop() {

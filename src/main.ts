@@ -1,7 +1,6 @@
 import { initPWA } from './pwa'
 import { Game } from './game'
 import { Rocon } from './recon'
-import './style.css'
 
 const app = document.getElementById("app")!
 initPWA(app)

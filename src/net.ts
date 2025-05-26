@@ -2,7 +2,6 @@ import { type DataConnection, Peer } from "peerjs"
 
 export class Net {
   hostid: HTMLElement
-  share: HTMLButtonElement
   peerid: HTMLInputElement
   join: HTMLButtonElement
 
@@ -16,7 +15,6 @@ export class Net {
 
   constructor(app: Element) {
     this.hostid = app.querySelector("#hostid")!
-    this.share = app.querySelector("#share")!
     this.peerid = app.querySelector("#peerid")!
     this.join = app.querySelector("#join")!
     this.isHost = true
@@ -42,10 +40,6 @@ export class Net {
     this.peer.on("connection", (conn) =>
       this.setupConnectionListeners(conn, true))
 
-    this.share.onclick = async () => {
-      await navigator.clipboard.writeText(this.url.toString())
-      this.share.innerText = "Copied ✅"
-    }
     this.join.onclick = () => {
       this.join.innerText = "Joining..."
       this.join.disabled = true

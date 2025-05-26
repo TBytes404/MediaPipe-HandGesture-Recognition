@@ -1,74 +1,85 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Rock ✊ Paper 🖐️ Scissors ✌️</title>
-<script type="module" src="/src/main.ts"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Rock ✊ Paper 🖐️ Scissors ✌️</title>
+  <link rel="stylesheet" href="/src/styles.css">
+  <script type="module" src="/src/main.ts"></script>
 </head>
+
 <body>
-<div id="app">
-  <div id="container">
-    <div id="media">
-      <button id="flip">Flip Camera</button>
-      <video id="video" autoplay></video>
-      <canvas id="canvas"></canvas>
-    </div>
-    <div id="move">
-      <h2>Your Move:</h2>
-      <ol id="gestures">
-        <li>Rock ✊</li>
-        <li>Paper 🖐️</li>
-        <li>Scissors ✌️</li>
+  <div id="app">
+    <div id="container">
+      <div id="media">
+        <button id="flip">Flip Camera</button>
+        <video id="video" autoplay></video>
+        <canvas id="canvas"></canvas>
+      </div>
+      <div id="move">
+        <h2>Your Move</h2>
+        <ol id="gestures">
+          <li>Rock ✊</li>
+          <li>Paper 🖐️</li>
+          <li>Scissors ✌️</li>
+        </ol>
+      </div>
+      <div id="match">
+        <h2>Game Mode</h2>
+        <div class="radio-group">
+          <label for="vsplayer" class="radio">
+            <input type="radio" name="match" value="multiplayer" id="vsplayer" checked>
+            <span>VS Player</span>
+          </label>
+          <label for="vscomputer" class="radio">
+            <input type="radio" name="match" value="singleplayer" id="vscomputer">
+            <span>VS Computer</span>
+          </label>
+        </div>
+        <div id="multiplayer">
+          <p class="help-text">Share this ID with your friend.</p>
+          <div>
+            <h4 id="hostid"></h4>
+            <button id="share">Share</button>
+          </div>
+          <p class="help-text">Paste your friend's ID here.</p>
+          <div>
+            <textarea id="peerid" type="text" rows="1" cols="36" placeholder="Peer ID"></textarea>
+            <button id="join">Join</button>
+          </div>
+        </div>
+        <div id="singleplayer" hidden>
+          <p class="help-text">Play with the computer until your friend joins.</p>
+          <button id="play">Play</button>
+        </div>
+      </div>
+      <div id="game" hidden>
+        <h2>Opposition</h2>
+        <img id="opposition" alt="Opposition">
+        <h1 id="message"></h1>
+      </div>
+      <ol id="scores">
+        <li>Ties: <span>0</span></li>
+        <li>Wins: <span>0</span></li>
+        <li>Losses: <span>0</span></li>
       </ol>
     </div>
-    <div id="match">
-      <input type="radio" name="match" value="singleplayer" id="vscomputer" checked>
-      <label for="vscomputer">VS Computer</label><br>
-      <div id="singleplayer">
-        <button id="play">Play</button>
+    <div id="pwa-toast" role="alert" aria-labelledby="toast-message">
+      <div class="message">
+        <span id="toast-message"></span>
       </div>
-      <input type="radio" name="match" value="multiplayer" id="vsplayer">
-      <label for="vsplayer">VS Player</label><br>
-      <div id="multiplayer" hidden>
-        <div>
-          <h4 id="hostid"></h4>
-          <button id="share">Share</button>
-        </div>
-        <div>
-          <textarea id="peerid" type="text" cols="36" placeholder="Peer ID"></textarea>
-          <button id="join">Join</button>
-        </div>
-      </div>
-    </div>
-    <div id="game" hidden>
-      <h2>Opposition:</h2>
-      <img id="opposition" alt="Opposition">
-      <h1 id="message"></h1>
-    </div>
-    <ol id="scores">
-      <li>Ties: <span></span></li>
-      <li>Wins: <span></span></li>
-      <li>Losses: <span></span></li>
-    </ol>
-  </div>
-  <div
-    id="pwa-toast"
-    role="alert"
-    aria-labelledby="toast-message"
-  >
-    <div class="message">
-      <span id="toast-message"></span>
-    </div>
-    <div class="buttons">
+      <div class="buttons">
         <button id="pwa-refresh" type="button">
           Reload
         </button>
         <button id="pwa-close" type="button">
           Close
         </button>
+      </div>
     </div>
   </div>
-</div>
 </body>
+
 </html>
