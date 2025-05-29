@@ -3,7 +3,6 @@ import { type DataConnection, Peer } from "peerjs"
 export class Net {
   hostid: HTMLElement
   peerid: HTMLInputElement
-  join: HTMLButtonElement
 
   url: URL
   isHost: boolean
@@ -16,7 +15,6 @@ export class Net {
   constructor(app: Element) {
     this.hostid = app.querySelector("#hostid")!
     this.peerid = app.querySelector("#peerid")!
-    this.join = app.querySelector("#join")!
     this.isHost = true
     this.peer = new Peer()
     this.url = new URL(location.href)
@@ -36,20 +34,15 @@ export class Net {
       this.hostid.textContent = id
       this.url.searchParams.set("hostid", id)
       history.pushState(null, '', this.url)
+      this.join()
     })
     this.peer.on("connection", (conn) =>
       this.setupConnectionListeners(conn, true))
+  }
 
-    this.join.onclick = () => {
-      this.join.innerText = "Joining..."
-      this.join.disabled = true
-      setTimeout(() => {
-        this.join.innerText = "Join"
-        this.join.disabled = false
-      }, 8000)
-      this.setupConnectionListeners(
-        this.peer.connect(this.peerid.value.trim()), false)
-    }
+  join() {
+    this.setupConnectionListeners(
+      this.peer.connect(this.peerid.value.trim()), false)
   }
 
   private setupConnectionListeners(conn: DataConnection, isHost: boolean) {

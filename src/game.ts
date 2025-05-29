@@ -13,6 +13,7 @@ export class Game {
   multiplayer: HTMLElement
   play: HTMLButtonElement
   share: HTMLButtonElement
+  join: HTMLButtonElement
 
   paused: boolean
   gestureNames: string[]
@@ -34,6 +35,7 @@ export class Game {
     this.message = app.querySelector("#message")!
     this.scores = app.querySelectorAll("#scores>li>span")!
     this.share = app.querySelector("#share")!
+    this.join = app.querySelector("#join")!
     this.paused = false
     this.gestureNames = ["rock", "paper", "scissors"]
     this.displayTexts = ["It's a Tie!", "You Win!", "You Lose!"]
@@ -61,16 +63,32 @@ export class Game {
     }
 
     this.setupMultiplayer()
+    this.vsplayer.onclick = () => {
+      this.singleplayer.hidden = true
+      this.multiplayer.hidden = false
+    }
+
     this.share.onclick = async () => {
       await navigator.clipboard.writeText(this.net.url.toString())
       this.share.innerText = "Copied ✅"
+      await navigator.share({
+        title: "Game Invite", url: this.net.url.toString(),
+        text: `Play Rock Paper Scissors online — just use your hands!
+        \r🖐✌️✊Challenge your friends in real-time!\n\n`,
+      })
       this.vscomputer.checked = true
       this.singleplayer.hidden = false
       this.multiplayer.hidden = true
     }
-    this.vsplayer.onclick = () => {
-      this.singleplayer.hidden = true
-      this.multiplayer.hidden = false
+
+    this.join.onclick = () => {
+      this.net.join()
+      this.join.innerText = "Joining..."
+      this.join.disabled = true
+      setTimeout(() => {
+        this.join.innerText = "Join"
+        this.join.disabled = false
+      }, 8000)
     }
   }
 
